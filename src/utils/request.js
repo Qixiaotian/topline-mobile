@@ -1,10 +1,19 @@
 // 引入axios
 import axios from 'axios'
+import bigint from 'json-bigint'
 // 创建一个实例
 const instance = axios.create({
   timeout: 4000,
   baseURL: ' http://ttapi.research.itcast.cn'
 })
+// 在处理大数的时候 ,一定要在请求前处理掉
+instance.defaults.transformResponse = [data => {
+  try {
+    return bigint.parse(data)
+  } catch (err) {
+    return data
+  }
+}]
 // axios设置请求拦截器
 instance.interceptors.request.use(config => {
   config.headers.mytoken = 'nihao' // 设置响应头
