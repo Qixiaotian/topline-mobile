@@ -41,6 +41,7 @@ export default {
     }
   },
   methods: {
+
     ...mapMutations(['setPush']),
     async loginFun () {
       try {
@@ -54,6 +55,21 @@ export default {
         this.$toast.fail('登陆失败')
       }
     }
+  },
+  created () {
+    const dict = {
+      custom: {
+        mobile: {
+          required: '请输入手机号码',
+          digits: '手机号码必须是11位数'
+        },
+        code: {
+          required: '请输入验证码',
+          digits: '请输入的号码是6为数字'
+        }
+      }
+    }
+    this.$validator.localize('dict', dict)
   }
 }
 </script>

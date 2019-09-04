@@ -1,6 +1,7 @@
 // 引入axios
 import axios from 'axios'
 import bigint from 'json-bigint'
+import store from '../store/index'
 // 创建一个实例
 export const createAPI = (url, method, data) => {
   let config = {}
@@ -29,7 +30,7 @@ instance.defaults.transformResponse = [data => {
 }]
 // axios设置请求拦截器
 instance.interceptors.request.use(config => {
-  config.headers.mytoken = 'nihao' // 设置响应头
+  config.headers.Authorization = `Bearer ${store.state.user.token}` // 设置响应头
   return config
 }, err => {
   console.log(err)
