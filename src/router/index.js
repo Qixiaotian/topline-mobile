@@ -1,14 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '../views/login.vue'
+import Tabbar from '@/views/Tabbar'
+import Home from '@/views/home'
 Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'login',
-      component: Login
+      component: () => import('@/views/login.vue')
+    },
+    {
+      path: '/',
+      component: Tabbar,
+      children: [
+        {
+          name: 'home',
+          path: '',
+          component: Home
+        }
+      ]
     }
+
     // {
     //   path: '/about',
     //   name: 'about',

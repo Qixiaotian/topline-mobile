@@ -53,7 +53,7 @@ export default {
           return
         }
         let res = await login(this.user)
-        // this.$router.push('./home')
+        this.$router.push('./')
         // this.$store.commit('setPush', res)
         this.setPush(res)
         this.$toast.success('登陆成功')
