@@ -3,7 +3,7 @@
     <van-nav-bar title="登录" />
     <van-cell-group>
       <van-field
-        v-validate="'required|digits:11'"
+        v-validate="{required,regex:/^1[3456789]\d{9}$/}"
         name="mobile"
         :error-message="errors.first('mobile')"
         v-model="user.mobile"
@@ -45,6 +45,8 @@ export default {
     ...mapMutations(['setPush']),
     async loginFun () {
       try {
+        let valid = await this.$validator.validate()
+        if (!valid) { return }
         let res = await login(this.user)
         // this.$router.push('./home')
         // this.$store.commit('setPush', res)
@@ -61,7 +63,7 @@ export default {
       custom: {
         mobile: {
           required: '请输入手机号码',
-          digits: '手机号码必须是11位数'
+          regex: '请输入正确格式的手机号码'
         },
         code: {
           required: '请输入验证码',
