@@ -3,7 +3,7 @@
     <van-nav-bar title="登录" />
     <van-cell-group>
       <van-field
-        v-validate="{required,regex:/^1[3456789]\d{9}$/}"
+        v-validate="{required:true,regex:/^1[3456789]\d{9}$/}"
         name="mobile"
         :error-message="errors.first('mobile')"
         v-model="user.mobile"
@@ -12,7 +12,7 @@
         placeholder="请输入手机号"
       />
       <van-field
-        v-validate="'required||digits:6'"
+        v-validate="'required|digits:6'"
         name="code"
         :error-message="errors.first('code')"
         v-model="user.code"
@@ -23,17 +23,18 @@
       </van-field>
     </van-cell-group>
     <div class="click-btn">
-      <van-button type="info" size="large" @click="loginFun">登录</van-button>
+      <van-button type="info" size="large" @click="loginFun" :loading="loading">登录</van-button>
     </div>
   </div>
 </template>
 
 <script>
-import { login } from '../api/user'
+import { login } from '@/api/user'
 import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
+      loading: false,
       user: {
         mobile: '13911111111',
         code: '246810'
@@ -44,18 +45,24 @@ export default {
 
     ...mapMutations(['setPush']),
     async loginFun () {
+      this.loading = true
       try {
         let valid = await this.$validator.validate()
-        if (!valid) { return }
+        if (!valid) {
+          this.loading = false
+          return
+        }
         let res = await login(this.user)
         // this.$router.push('./home')
         // this.$store.commit('setPush', res)
         this.setPush(res)
         this.$toast.success('登陆成功')
+        this.loading = false
       } catch (err) {
         console.log(err)
         this.$toast.fail('登陆失败')
       }
+      this.loading = false
     }
   },
   created () {
