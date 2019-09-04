@@ -2,6 +2,19 @@
 import axios from 'axios'
 import bigint from 'json-bigint'
 // 创建一个实例
+export const createAPI = (url, method, data) => {
+  let config = {}
+  if (method === 'get') {
+    config.params = data
+  } else {
+    config.data = data
+  }
+  return instance({
+    url,
+    method,
+    ...config
+  })
+}
 const instance = axios.create({
   timeout: 4000,
   baseURL: ' http://ttapi.research.itcast.cn'

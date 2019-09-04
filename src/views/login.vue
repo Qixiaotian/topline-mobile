@@ -35,6 +35,7 @@ export default {
         let res = await login(this.user)
         // this.$router.push('./home')
         console.log(res)
+        this.$store.commit('setPush', res)
         this.$toast.success('登陆成功')
       } catch (err) {
         console.log(err)
