@@ -5,9 +5,11 @@ import store from './store'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 import './styles/login.less'
-import VeeValidate from 'vee-validate'
+import VeeValidate, { Validator } from 'vee-validate'
+import zhCN from 'vee-validate/dist/locale/zh_CN'
 Vue.use(Vant)
 Vue.use(VeeValidate)
+Validator.localize('zhCN', zhCN)
 Vue.config.productionTip = false
 
 new Vue({
