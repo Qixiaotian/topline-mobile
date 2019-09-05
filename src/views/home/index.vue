@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-tabs title-active-color="#3194ff" animated color="#3194ff">
+    <van-tabs title-active-color="#3194ff" animated color="#3194ff" v-model="activeIndex">
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
@@ -20,7 +20,8 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      channels: []
+      channels: [],
+      activeIndex: 0
     }
   },
   created () {
