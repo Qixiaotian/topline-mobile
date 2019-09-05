@@ -1,11 +1,12 @@
 <template>
   <div>
-    <van-tabs title-active-color="#3194ff" animated="true" color="#3194ff">
-      <van-tab v-for="index in 8" :title="'标签 ' + index" :key="index"></van-tab>
+    <van-tabs title-active-color="#3194ff" animated color="#3194ff">
+      <van-tab v-for="index in 8" :title="'标签 ' + index" :key="index">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <van-cell v-for="item in list" :key="item" :title="item" />
+        </van-list>
+      </van-tab>
     </van-tabs>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <van-cell v-for="item in list" :key="item" :title="item" />
-    </van-list>
   </div>
 </template>
 
@@ -35,9 +36,19 @@ export default {
       }, 500)
     }
   }
-
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.van-tabs {
+  /deep/ .van-tabs__wrap {
+    position: fixed;
+    top: 46px;
+    left: 0;
+    z-index: 100;
+  }
+   /deep/ .van-tabs__content {
+    margin-top: 90px;
+    margin-bottom: 50px;
+  }}
 </style>
