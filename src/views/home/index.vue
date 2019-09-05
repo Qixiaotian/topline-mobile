@@ -29,9 +29,14 @@ export default {
   },
   methods: {
     // 利用导入的请求函数发送请求渲染数据
+
     async loadChannels () {
-      let data = await getDdefaultOrUserChannel()
-      this.channels = data.channels
+      try {
+        let data = await getDdefaultOrUserChannel()
+        this.channels = data.channels
+      } catch (err) {
+        console.log(err)
+      }
     },
 
     onLoad () {
