@@ -4,7 +4,7 @@
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <van-cell v-for="item in list" :key="item" :title="item" />
+          <van-cell v-for="article in currentChannel.articles" :key="article.art_id" :title="article.title" />
         </van-list>
       </van-tab>
     </van-tabs>
@@ -14,6 +14,7 @@
 <script>
 // 导入封装的api函数
 import { getDdefaultOrUserChannel } from '@/api/channel'
+import { getArticles } from '@/api/article'
 export default {
   data () {
     return {
@@ -22,6 +23,11 @@ export default {
       finished: false,
       channels: [],
       activeIndex: 0
+    }
+  },
+  computed: {
+    currentChannel () {
+      return this.channels[this.activeIndex]
     }
   },
   created () {
@@ -35,40 +41,41 @@ export default {
       try {
         let data = await getDdefaultOrUserChannel()
         this.channels = data.channels
+        data.channels.forEach((channel) => {
+          channel.timestamp = null
+          channel.articles = []
+        })
       } catch (err) {
         console.log(err)
       }
     },
 
-    onLoad () {
+    async  onLoad () {
       // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 500)
+      const data = await getArticles({
+        channel_id: this.currentChannel.id,
+        timestamp: this.currentChannel.timestamp || Date.now(),
+        with_top: 1
+      })
+      this.currentChannel.timestamp = data.pre_timestamp
+      this.currentChannel.articles.push(...data.results)
+      this.loading = false
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.van-tabs {
-  /deep/ .van-tabs__wrap {
-    position: fixed;
-    top: 46px;
-    left: 0;
-    z-index: 100;
+  .van-tabs {
+    /deep/ .van-tabs__wrap {
+      position: fixed;
+      top: 46px;
+      left: 0;
+      z-index: 100;
+    }
+    /deep/ .van-tabs__content {
+      margin-top: 90px;
+      margin-bottom: 50px;
+    }
   }
-   /deep/ .van-tabs__content {
-    margin-top: 90px;
-    margin-bottom: 50px;
-  }}
 </style>
