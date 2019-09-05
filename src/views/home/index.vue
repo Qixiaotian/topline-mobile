@@ -3,9 +3,20 @@
     <van-tabs title-active-color="#3194ff" animated color="#3194ff" v-model="activeIndex">
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <van-cell v-for="article in currentChannel.articles" :key="article.art_id" :title="article.title" />
+        <van-pull-refresh v-model="currentChannel.pullLoading" @refresh="onRefresh">
+        <van-list
+          v-model="currentChannel.loading"
+          :finished="currentChannel.finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <van-cell
+            v-for="article in currentChannel.articles"
+            :key="article.art_id.toString()"
+            :title="article.title"
+          />
         </van-list>
+        </van-pull-refresh>
       </van-tab>
     </van-tabs>
   </div>
@@ -18,9 +29,9 @@ import { getArticles } from '@/api/article'
 export default {
   data () {
     return {
-      list: [],
-      loading: false,
-      finished: false,
+      // list: [],
+      // loading: false,
+      // finished: false,
       channels: [],
       activeIndex: 0
     }
@@ -40,17 +51,20 @@ export default {
     async loadChannels () {
       try {
         let data = await getDdefaultOrUserChannel()
-        this.channels = data.channels
-        data.channels.forEach((channel) => {
+        data.channels.forEach(channel => {
           channel.timestamp = null
           channel.articles = []
+          channel.loading = false
+          channel.finished = false
+          channel.pullLoading = false
         })
+        this.channels = data.channels
       } catch (err) {
         console.log(err)
       }
     },
 
-    async  onLoad () {
+    async onLoad () {
       // 异步更新数据
       const data = await getArticles({
         channel_id: this.currentChannel.id,
@@ -59,8 +73,18 @@ export default {
       })
       this.currentChannel.timestamp = data.pre_timestamp
       this.currentChannel.articles.push(...data.results)
-      this.loading = false
+      this.currentChannel.loading = false
+      if (data.results.length === 0) {
+        this.currentChannel.finished = true
+      }
+    },
+    onRefresh () {
+      setTimeout(() => {
+        this.$toast('刷新成功')
+        this.currentChannel.pullLoading = false
+      }, 500)
     }
+
   }
 }
 </script>
