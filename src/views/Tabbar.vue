@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-nav-bar title="黑马头条" fixed></van-nav-bar>
-    <router-view class="view"></router-view>
+    <router-view></router-view>
     <van-tabbar route>
       <van-tabbar-item icon="home-o" to="/">主页</van-tabbar-item>
       <van-tabbar-item icon="chat" to="qa">问答</van-tabbar-item>

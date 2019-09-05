@@ -1,7 +1,8 @@
 <template>
   <div>
     <van-tabs title-active-color="#3194ff" animated color="#3194ff">
-      <van-tab v-for="index in 8" :title="'标签 ' + index" :key="index">
+      <!-- 对数据进行页面加载 -->
+      <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <van-cell v-for="item in list" :key="item" :title="item" />
         </van-list>
@@ -11,15 +12,28 @@
 </template>
 
 <script>
+// 导入封装的api函数
+import { getDdefaultOrUserChannel } from '@/api/channel'
 export default {
   data () {
     return {
       list: [],
       loading: false,
-      finished: false
+      finished: false,
+      channels: []
     }
   },
+  created () {
+    // 调用展示
+    this.loadChannels()
+  },
   methods: {
+    // 利用导入的请求函数发送请求渲染数据
+    async loadChannels () {
+      let data = await getDdefaultOrUserChannel()
+      this.channels = data.channels
+    },
+
     onLoad () {
       // 异步更新数据
       setTimeout(() => {
