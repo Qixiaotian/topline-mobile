@@ -1,6 +1,6 @@
 <template>
+  <div>
     <van-tabs title-active-color="#3194ff" animated color="#3194ff" v-model="activeIndex">
-
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
         <!-- vant的下拉加载 -->
@@ -15,26 +15,26 @@
             finished-text="没有更多了"
             @load="onLoad"
           >
-          <!--  每一项列表显示的内容 -->
+            <!--  每一项列表显示的内容 -->
             <van-cell
               v-for="article in currentChannel.articles"
               :key="article.art_id.toString()"
               :title="article.title"
             >
-            <!--  利用插槽编辑说明的那个位置 -->
+              <!--  利用插槽编辑说明的那个位置 -->
               <div slot="label">
                 <!-- grid 显示封面
                   article.cover.type   0 没有图片   1 1个图片 3 3个图片
                 -->
                 <van-grid v-if="article.cover.type" :border="false" :column-num="3">
                   <van-grid-item v-for="(img, index) in article.cover.images" :key="img + index">
-                    <van-image  lazy-load height="80" :src="img">
+                    <van-image lazy-load height="80" :src="img">
                       <!-- Image组件提供了默认的加载中提示，支持通过loading插槽自定义内容 -->
-                       <template v-slot:loading >
-                           <van-loading type="spinner" size="20" />
-                       </template>
-                       <!-- Image组件提供了默认的加载失败提示，支持通过error插槽自定义内容 -->
-                       <template v-slot:error>加载失败</template>
+                      <template v-slot:loading>
+                        <van-loading type="spinner" size="20" />
+                      </template>
+                      <!-- Image组件提供了默认的加载失败提示，支持通过error插槽自定义内容 -->
+                      <template v-slot:error>加载失败</template>
                     </van-image>
                   </van-grid-item>
                 </van-grid>
@@ -47,7 +47,7 @@
                   <!-- 发布的时间  由于时间需要进行处理dayjs -->
                   <span>{{ article.pubdate |fmtDate}}</span>&nbsp;
                   <!-- 右侧的图标 -->
-                  <van-icon name="cross" class="close" />
+                  <van-icon name="cross" class="close" @click="showDialog=true" />
                 </p>
               </div>
             </van-cell>
@@ -55,18 +55,23 @@
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
-
+    <more-action v-model="showDialog"></more-action>
+  </div>
 </template>
 
 <script>
 // 导入封装的api函数
 import { getDdefaultOrUserChannel } from '@/api/channel'
 import { getArticles } from '@/api/article'
+import MoreAction from '@/views/home/components/MoreAction'
 // 导入vue利用vant里面的一个懒加载实现图片加载的功能
 import Vue from 'vue'
 import { Lazyload } from 'vant'
 Vue.use(Lazyload)
 export default {
+  components: {
+    MoreAction
+  },
   data () {
     return {
       // list: [],
@@ -154,7 +159,7 @@ export default {
       margin-bottom: 50px;
     }
   }
-  .close{
+  .close {
     float: right;
   }
 </style>
