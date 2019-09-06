@@ -79,7 +79,8 @@ export default {
       // finished: false,
       successText: '',
       channels: [],
-      activeIndex: 0
+      activeIndex: 0,
+      showDialog: false
     }
   },
   computed: {

@@ -1,6 +1,8 @@
 <template>
+ <!-- 弹层组件 不显示确认按钮 点击是否关闭遮罩层 -->
    <van-dialog
-   v-model="sha"
+   :value= 'value'
+   @input="$emit('input',$event)"
    :show-confirm-button='false'
    closeOnClickOverlay
    >
@@ -22,6 +24,12 @@
 <script>
 export default {
   name: 'MoreAction',
+  props: {
+    value: {
+      type: Number,
+      required: true
+    }
+  },
   data () {
     return {
       sha: true,
