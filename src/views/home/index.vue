@@ -1,6 +1,6 @@
 <template>
-  <div>
     <van-tabs title-active-color="#3194ff" animated color="#3194ff" v-model="activeIndex">
+
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
         <van-pull-refresh
@@ -14,16 +14,40 @@
             finished-text="没有更多了"
             @load="onLoad"
           >
+          <!--  每一项列表显示的内容 -->
             <van-cell
               v-for="article in currentChannel.articles"
               :key="article.art_id.toString()"
               :title="article.title"
-            />
+            >
+            <!--  利用插槽编辑说明的那个位置 -->
+              <div slot="label">
+                <!-- grid 显示封面
+                  article.cover.type   0 没有图片   1 1个图片 3 3个图片
+                -->
+                <van-grid v-if="article.cover.type" :border="false" :column-num="3">
+                  <van-grid-item v-for="(img, index) in article.cover.images" :key="img + index">
+                    <van-image height="80" :src="img" />
+                  </van-grid-item>
+                </van-grid>
+                <!-- 底下文字区域 接口相对应的数据-->
+                <p>
+                  <!-- 作者的名字 -->
+                  <span>{{ article.aut_name }}</span>&nbsp;
+                  <!-- 评论的数量 -->
+                  <span>{{ article.comm_count }}评论</span>&nbsp;
+                  <!-- 发布的时间  由于时间需要进行处理dayjs -->
+                  <span>{{ article.pubdate }}</span>&nbsp;
+                  <!-- 右侧的图标 -->
+                  <van-icon name="cross" class="close" />
+                </p>
+              </div>
+            </van-cell>
           </van-list>
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
-  </div>
+
 </template>
 
 <script>
@@ -83,7 +107,7 @@ export default {
         this.currentChannel.finished = true
       }
     },
-    async  onRefresh () {
+    async onRefresh () {
       try {
         const data = await getArticles({
           // 频道的id
@@ -110,11 +134,15 @@ export default {
       position: fixed;
       top: 46px;
       left: 0;
+      right: 10px;
       z-index: 100;
     }
     /deep/ .van-tabs__content {
       margin-top: 90px;
       margin-bottom: 50px;
     }
+  }
+  .close{
+    float: right;
   }
 </style>
