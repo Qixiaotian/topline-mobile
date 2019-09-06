@@ -3,19 +3,23 @@
     <van-tabs title-active-color="#3194ff" animated color="#3194ff" v-model="activeIndex">
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
-        <van-pull-refresh v-model="currentChannel.pullLoading" @refresh="onRefresh">
-        <van-list
-          v-model="currentChannel.loading"
-          :finished="currentChannel.finished"
-          finished-text="没有更多了"
-          @load="onLoad"
+        <van-pull-refresh
+          :success-text="successText"
+          v-model="currentChannel.pullLoading"
+          @refresh="onRefresh"
         >
-          <van-cell
-            v-for="article in currentChannel.articles"
-            :key="article.art_id.toString()"
-            :title="article.title"
-          />
-        </van-list>
+          <van-list
+            v-model="currentChannel.loading"
+            :finished="currentChannel.finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell
+              v-for="article in currentChannel.articles"
+              :key="article.art_id.toString()"
+              :title="article.title"
+            />
+          </van-list>
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
@@ -32,6 +36,7 @@ export default {
       // list: [],
       // loading: false,
       // finished: false,
+      successText: '',
       channels: [],
       activeIndex: 0
     }
@@ -78,13 +83,23 @@ export default {
         this.currentChannel.finished = true
       }
     },
-    onRefresh () {
-      setTimeout(() => {
-        this.$toast('刷新成功')
+    async  onRefresh () {
+      try {
+        const data = await getArticles({
+          // 频道的id
+          channel_id: this.currentChannel.id,
+          // 时间戳
+          timestamp: Date.now(),
+          // 是否包含置顶1，0不包含
+          with_top: 1
+        })
         this.currentChannel.pullLoading = false
-      }, 500)
+        this.currentChannel.articles.unshift(...data.results)
+        this.successText = `加载了${data.results.length}条数据`
+      } catch (err) {
+        console.log(err)
+      }
     }
-
   }
 }
 </script>
