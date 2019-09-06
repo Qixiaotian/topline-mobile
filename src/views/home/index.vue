@@ -3,6 +3,7 @@
 
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
+        <!-- vant的下拉加载 -->
         <van-pull-refresh
           :success-text="successText"
           v-model="currentChannel.pullLoading"
@@ -27,7 +28,14 @@
                 -->
                 <van-grid v-if="article.cover.type" :border="false" :column-num="3">
                   <van-grid-item v-for="(img, index) in article.cover.images" :key="img + index">
-                    <van-image height="80" :src="img" />
+                    <van-image  lazy-load height="80" :src="img">
+                      <!-- Image组件提供了默认的加载中提示，支持通过loading插槽自定义内容 -->
+                       <template v-slot:loading >
+                           <van-loading type="spinner" size="20" />
+                       </template>
+                       <!-- Image组件提供了默认的加载失败提示，支持通过error插槽自定义内容 -->
+                       <template v-slot:error>加载失败</template>
+                    </van-image>
                   </van-grid-item>
                 </van-grid>
                 <!-- 底下文字区域 接口相对应的数据-->
@@ -54,6 +62,10 @@
 // 导入封装的api函数
 import { getDdefaultOrUserChannel } from '@/api/channel'
 import { getArticles } from '@/api/article'
+// 导入vue利用vant里面的一个懒加载实现图片加载的功能
+import Vue from 'vue'
+import { Lazyload } from 'vant'
+Vue.use(Lazyload)
 export default {
   data () {
     return {
