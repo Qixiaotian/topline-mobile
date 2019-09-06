@@ -45,7 +45,7 @@
                   <!-- 评论的数量 -->
                   <span>{{ article.comm_count }}评论</span>&nbsp;
                   <!-- 发布的时间  由于时间需要进行处理dayjs -->
-                  <span>{{ article.pubdate }}</span>&nbsp;
+                  <span>{{ article.pubdate |fmtDate}}</span>&nbsp;
                   <!-- 右侧的图标 -->
                   <van-icon name="cross" class="close" />
                 </p>
