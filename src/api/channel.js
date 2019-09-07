@@ -8,6 +8,6 @@ export const getAllChannels = () => {
   return request.get('/app/v1_0/channels')
 }
 // 删除用户的频道
-// export const deleteChannels = (id) => {
-//   return request.delete('/app/v1_0/user/',{})
-// }
+export const deleteChannels = (id) => {
+  return request.delete(`/app/v1_0/user/channels/${id}`)
+}

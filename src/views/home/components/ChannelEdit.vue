@@ -16,7 +16,7 @@
         <van-button round type="danger" size="mini" @click="isEdit=false">完成</van-button>
       </van-cell>
       <van-grid>
-        <van-grid-item v-for="(channel,index) in channels" :key="channel.id"  @click="MychannelItem(index)">
+        <van-grid-item v-for="(channel,index) in channels" :key="channel.id"  @click="MychannelItem(index,channel.id)">
             <!-- 因为在组建内部无法进行样式转化，所以引用插槽对其样式进行改变 -->
        <div slot="text" class="van-grid-item__text" :class="{ active: active === index }" >
            <!--  当所传递过来的索引与其相对应的相等的时候就显示这个样式 -->
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, deleteChannels } from '@/api/channel'
 import { mapState } from 'vuex'
 import { setItem } from '@/utils/localStorage'
 export default {
@@ -73,7 +73,7 @@ export default {
       }
     //   console.log(data)
     },
-    MychannelItem (index) {
+    async MychannelItem (index, channelId) {
       // 非编辑模式
       if (!this.isEdit) {
         this.$emit('changeIndex', index)
@@ -83,6 +83,11 @@ export default {
       // 编辑模式
       this.channels.splice(index, 1)
       if (this.user) {
+        try {
+          await deleteChannels(channelId)
+        } catch (err) {
+          this.$toast.fail('操作失败')
+        }
         // eslint-disable-next-line no-useless-return
         return
       }
