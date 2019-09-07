@@ -61,6 +61,8 @@
       v-if="currentArticle"
       @handlesuccess="handlesuccess"
     ></more-action>
+    <!--  使用编辑组建 -->
+    <channel-edit></channel-edit>
   </div>
 </template>
 
@@ -69,6 +71,8 @@
 import { getDdefaultOrUserChannel } from '@/api/channel'
 import { getArticles } from '@/api/article'
 import MoreAction from '@/views/home/components/MoreAction'
+// 导入弹层
+import ChannelEdit from '@/views/home/components/ChannelEdit'
 // 导入vue利用vant里面的一个懒加载实现图片加载的功能
 import { getItem, setItem } from '@/utils/localStorage'
 import Vue from 'vue'
@@ -76,7 +80,9 @@ import { Lazyload } from 'vant'
 Vue.use(Lazyload)
 export default {
   components: {
-    MoreAction
+    MoreAction,
+    // 注册编辑组建
+    ChannelEdit
   },
   data () {
     return {
@@ -129,7 +135,6 @@ export default {
             setItem('channels', channels)
           }
         }
-
         channels.forEach(channel => {
           channel.timestamp = null
           channel.articles = []
