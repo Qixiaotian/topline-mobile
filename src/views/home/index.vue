@@ -47,7 +47,7 @@
                   <!-- 发布的时间  由于时间需要进行处理dayjs -->
                   <span>{{ article.pubdate |fmtDate}}</span>&nbsp;
                   <!-- 右侧的图标 -->
-                  <van-icon name="cross" class="close" @click="showDialog=true" />
+                  <van-icon name="cross" class="close" @click="handleAction(article)" />
                 </p>
               </div>
             </van-cell>
@@ -55,7 +55,12 @@
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
-    <more-action v-model="showDialog"></more-action>
+    <more-action
+     v-model="showDialog"
+     :article="currentArticle"
+      v-if="currentArticle"
+      @handlesuccess='handlesuccess'
+    ></more-action>
   </div>
 </template>
 
@@ -80,7 +85,8 @@ export default {
       successText: '',
       channels: [],
       activeIndex: 0,
-      showDialog: false
+      showDialog: false,
+      currentArticle: null
     }
   },
   computed: {
@@ -93,6 +99,15 @@ export default {
     this.loadChannels()
   },
   methods: {
+    // 接收子组件传过来的值
+    handlesuccess () {
+      // 关闭弹层
+      this.showDialog = false
+      const index = this.currentChannel.articles.findIndex((article) => {
+        return article.art_id === this.currentArticle.art_id
+      })
+      this.currentChannel.articles.splice(index, 1)
+    },
     // 利用导入的请求函数发送请求渲染数据
 
     async loadChannels () {
@@ -141,6 +156,10 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    handleAction (article) {
+      this.showDialog = true
+      this.currentArticle = article
     }
   }
 }
