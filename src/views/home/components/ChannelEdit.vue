@@ -16,13 +16,13 @@
         <van-button round type="danger" size="mini" @click="isEdit=false">完成</van-button>
       </van-cell>
       <van-grid>
-        <van-grid-item v-for="(channel,index) in channels" :key="channel.id" >
+        <van-grid-item v-for="(channel,index) in channels" :key="channel.id"  @click="MychannelItem(index)">
             <!-- 因为在组建内部无法进行样式转化，所以引用插槽对其样式进行改变 -->
        <div slot="text" class="van-grid-item__text" :class="{ active: active === index }" >
            <!--  当所传递过来的索引与其相对应的相等的时候就显示这个样式 -->
           {{ channel.name }}
         </div>
-          <van-icon slot="icon" class="close-icon" v-show="isEdit" name="close" />
+          <van-icon slot="icon" class="close-icon" v-show="isEdit && index!==0" name="close"  />
         </van-grid-item>
       </van-grid>
       <!-- 推荐频道 -->
@@ -36,6 +36,8 @@
 
 <script>
 import { getAllChannels } from '@/api/channel'
+import { mapState } from 'vuex'
+import { setItem } from '@/utils/localStorage'
 export default {
   props: {
     value: {
@@ -61,6 +63,7 @@ export default {
     }
   },
   methods: {
+    // 发送请求对全部列表进行渲染
     async AllChannels () {
       try {
         let data = await getAllChannels()
@@ -69,12 +72,28 @@ export default {
         console.log(err)
       }
     //   console.log(data)
+    },
+    MychannelItem (index) {
+      // 非编辑模式
+      if (!this.isEdit) {
+        this.$emit('changeIndex', index)
+        // eslint-disable-next-line no-useless-return
+        return
+      }
+      // 编辑模式
+      this.channels.splice(index, 1)
+      if (this.user) {
+        // eslint-disable-next-line no-useless-return
+        return
+      }
+      setItem('channels', this.channels)
     }
   },
   created () {
     this.AllChannels()
   },
   computed: {
+    ...mapState(['user']),
     // eslint-disable-next-line vue/return-in-computed-property
     recommendChannels () {
       const ids = this.channels.map((channel) => {

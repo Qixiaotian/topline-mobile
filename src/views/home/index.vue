@@ -64,7 +64,7 @@
       @handlesuccess="handlesuccess"
     ></more-action>
     <!--  使用编辑组建 -->
-    <channel-edit v-model="showChannelEdit" :channels='channels' :active="activeIndex"></channel-edit>
+    <channel-edit v-model="showChannelEdit" :channels='channels' :active="activeIndex" @changeIndex="changeIndex"></channel-edit>
   </div>
 </template>
 
@@ -119,8 +119,12 @@ export default {
       })
       this.currentChannel.articles.splice(index, 1)
     },
+    // 接受子组件传过来的值进行对当前页面频道列表进行传值
+    changeIndex (index) {
+      this.activeIndex = index
+      this.showChannelEdit = false
+    },
     // 利用导入的请求函数发送请求渲染数据
-
     async loadChannels () {
       try {
         // let data = await getDdefaultOrUserChannel()
