@@ -3,3 +3,7 @@ import request from '../utils/request'
 export const getDdefaultOrUserChannel = () => {
   return request.get('/app/v1_0/user/channels')
 }
+// 封装获取所有频道的api
+export const getAllChannels = () => {
+  return request.get('/app/v1_0/channels')
+}
