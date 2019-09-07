@@ -64,7 +64,7 @@
       @handlesuccess="handlesuccess"
     ></more-action>
     <!--  使用编辑组建 -->
-    <channel-edit v-model="showChannelEdit" :channels='channels'></channel-edit>
+    <channel-edit v-model="showChannelEdit" :channels='channels' :active="activeIndex"></channel-edit>
   </div>
 </template>
 

@@ -16,7 +16,12 @@
         <van-button round type="danger" size="mini" @click="isEdit=false">完成</van-button>
       </van-cell>
       <van-grid>
-        <van-grid-item v-for="channel in channels" :key="channel.id" :text="channel.name">
+        <van-grid-item v-for="(channel,index) in channels" :key="channel.id" >
+            <!-- 因为在组建内部无法进行样式转化，所以引用插槽对其样式进行改变 -->
+       <div slot="text" class="van-grid-item__text" :class="{ active: active === index }" >
+           <!--  当所传递过来的索引与其相对应的相等的时候就显示这个样式 -->
+          {{ channel.name }}
+        </div>
           <van-icon slot="icon" class="close-icon" v-show="isEdit" name="close" />
         </van-grid-item>
       </van-grid>
@@ -41,6 +46,11 @@ export default {
     channels: {
       require: true,
       type: Array
+    },
+    // 接受父组件传过来的索引值
+    active: {
+      require: true,
+      type: Number
     }
   },
   data () {
@@ -84,5 +94,8 @@ export default {
     position: absolute;
     right: 0;
     top: 0;
+  }
+  .active{
+ color: red
   }
 </style>
