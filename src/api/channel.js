@@ -11,3 +11,12 @@ export const getAllChannels = () => {
 export const deleteChannels = (id) => {
   return request.delete(`/app/v1_0/user/channels/${id}`)
 }
+// 添加用户的指定的频道
+// id频道的id,seq是当前项的序号
+export const addChannel = (id, seq) => {
+  return request.patch('/app/v1_0/user/channels', {
+    channels: [{
+      id, seq
+    }]
+  })
+}

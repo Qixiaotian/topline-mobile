@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { getAllChannels, deleteChannels } from '@/api/channel'
+import { getAllChannels, deleteChannels, addChannel } from '@/api/channel'
 import { mapState } from 'vuex'
 import { setItem } from '@/utils/localStorage'
 export default {
@@ -95,11 +95,16 @@ export default {
       // 最后将其频道的数据保存到本地存储
       setItem('channels', this.channels)
     },
-    handleChannelItem (item) {
+    async handleChannelItem (item) {
       // 1.把item添加到我的频道里面
       this.channels.push(item)
       // 2. 如果用户登录的话就进行发送请求
       if (this.user) {
+        try {
+          await addChannel(item.id, this.channels.length)
+        } catch (err) {
+          this.$toast.fail('操作失败')
+        }
         //  return
       }
       // 如果没有登录,把我的频道存储到本地存储中
