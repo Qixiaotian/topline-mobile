@@ -89,9 +89,11 @@ export default {
         this.$toast.fail('操作失败')
       }
     },
+    // 举报文章的功能
     async report (reportType) {
       try {
         await reports({ target: this.article.art_id, type: reportType })
+        // 在这要进行审核操作,所以只需要通知父组件关闭弹层即可
         this.$emit('input', false)
         this.$toast.success('操作成功')
         this.showReports = false

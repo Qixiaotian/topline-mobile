@@ -56,10 +56,10 @@
       </van-tab>
     </van-tabs>
     <more-action
-     v-model="showDialog"
-     :article="currentArticle"
+      v-model="showDialog"
+      :article="currentArticle"
       v-if="currentArticle"
-      @handlesuccess='handlesuccess'
+      @handlesuccess="handlesuccess"
     ></more-action>
   </div>
 </template>
@@ -70,6 +70,7 @@ import { getDdefaultOrUserChannel } from '@/api/channel'
 import { getArticles } from '@/api/article'
 import MoreAction from '@/views/home/components/MoreAction'
 // 导入vue利用vant里面的一个懒加载实现图片加载的功能
+import { getItem, setItem } from '@/utils/localStorage'
 import Vue from 'vue'
 import { Lazyload } from 'vant'
 Vue.use(Lazyload)
@@ -112,15 +113,31 @@ export default {
 
     async loadChannels () {
       try {
-        let data = await getDdefaultOrUserChannel()
-        data.channels.forEach(channel => {
+        // let data = await getDdefaultOrUserChannel()
+        //  如果用户登录过就发送请求--》这个过程中说明是每个用户都有自己的一个数据库进入数据库里面找属于自己的一些数据
+        let channels = []
+        if (this.$store.state.user) {
+          let data = await getDdefaultOrUserChannel()
+          channels = data.channels
+        } else {
+          // 如果不是用户登录首先在本地存储中找相关的数据
+          channels = getItem('channels')
+          // 本地数据中找不到信息要请求新的数据进行数据频道列表渲染
+          if (!channels) {
+            const data = await getDdefaultOrUserChannel()
+            channels = data.channals
+            setItem('channels', channels)
+          }
+        }
+
+        channels.forEach(channel => {
           channel.timestamp = null
           channel.articles = []
           channel.loading = false
           channel.finished = false
           channel.pullLoading = false
         })
-        this.channels = data.channels
+        this.channels = channels
       } catch (err) {
         console.log(err)
       }
