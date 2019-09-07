@@ -16,7 +16,7 @@
         <van-button round type="danger" size="mini" @click="isEdit=false">完成</van-button>
       </van-cell>
       <van-grid>
-        <van-grid-item v-for="value in 8" :key="value" text="文字">
+        <van-grid-item v-for="channel in channels" :key="channel.id" :text="channel.name">
           <van-icon slot="icon" class="close-icon" v-show="isEdit" name="close" />
         </van-grid-item>
       </van-grid>
@@ -35,6 +35,10 @@ export default {
     value: {
       require: true,
       type: Boolean
+    },
+    channels: {
+      require: true,
+      type: Array
     }
   },
   data () {
