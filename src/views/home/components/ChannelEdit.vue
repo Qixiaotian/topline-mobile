@@ -1,11 +1,17 @@
 <template>
   <div>
-    <van-popup v-model="show" closeable position="bottom" :style="{ height: '90%' }" />
+    <van-popup :value='value' @input="$emit('input',$event)" closeable position="bottom" :style="{ height: '90%' }" />
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    value: {
+      require: true,
+      type: Boolean
+    }
+  },
   data () {
     return {
       show: false

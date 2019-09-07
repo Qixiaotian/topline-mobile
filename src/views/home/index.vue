@@ -1,9 +1,11 @@
 <template>
   <div>
     <van-tabs title-active-color="#3194ff" animated color="#3194ff" v-model="activeIndex">
+      <!--  添加图标标签 -->
+      <!-- vant的下拉加载 -->
+      <van-icon slot="nav-right" name="wap-nav" class="nav-btn" @click="showChannelEdit=true" />
       <!-- 对数据进行页面加载 -->
       <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
-        <!-- vant的下拉加载 -->
         <van-pull-refresh
           :success-text="successText"
           v-model="currentChannel.pullLoading"
@@ -62,7 +64,7 @@
       @handlesuccess="handlesuccess"
     ></more-action>
     <!--  使用编辑组建 -->
-    <channel-edit></channel-edit>
+    <channel-edit v-model="showChannelEdit"></channel-edit>
   </div>
 </template>
 
@@ -93,7 +95,9 @@ export default {
       channels: [],
       activeIndex: 0,
       showDialog: false,
-      currentArticle: null
+      currentArticle: null,
+      // 控制弹层的显示隐藏
+      showChannelEdit: false
     }
   },
   computed: {
@@ -110,7 +114,7 @@ export default {
     handlesuccess () {
       // 关闭弹层
       this.showDialog = false
-      const index = this.currentChannel.articles.findIndex((article) => {
+      const index = this.currentChannel.articles.findIndex(article => {
         return article.art_id === this.currentArticle.art_id
       })
       this.currentChannel.articles.splice(index, 1)
@@ -203,5 +207,13 @@ export default {
   }
   .close {
     float: right;
+  }
+  .nav-btn {
+    position: fixed;
+    right: 10px;
+    line-height: 44px;
+    background-color:#fff;
+    opacity: 0.9;
+    font-size: 22px;
   }
 </style>
