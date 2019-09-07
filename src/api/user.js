@@ -7,3 +7,4 @@
 // 第二种书写形式
 import { createAPI } from '@/utils/request'
 export const login = ({ mobile, code }) => createAPI('/app/v1_0/authorizations', 'post', { mobile, code })
+export const blacklists = (id) => createAPI('/app/v1_0/user/blacklists', 'post', { target: id })
