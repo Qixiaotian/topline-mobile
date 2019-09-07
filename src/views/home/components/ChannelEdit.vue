@@ -28,7 +28,7 @@
       <!-- 推荐频道 -->
       <van-cell title="推荐频道" label="点击添加频道" />
       <van-grid>
-        <van-grid-item v-for="item in recommendChannels" :key="item.id" :text="item.name" />
+        <van-grid-item v-for="item in recommendChannels" :key="item.id" :text="item.name"  @click="handleChannelItem(item)"/>
       </van-grid>
     </van-popup>
   </div>
@@ -83,6 +83,7 @@ export default {
       // 编辑模式
       this.channels.splice(index, 1)
       if (this.user) {
+      // 如果用户编辑模式那么发送请求对其数据进行删除
         try {
           await deleteChannels(channelId)
         } catch (err) {
@@ -91,6 +92,17 @@ export default {
         // eslint-disable-next-line no-useless-return
         return
       }
+      // 最后将其频道的数据保存到本地存储
+      setItem('channels', this.channels)
+    },
+    handleChannelItem (item) {
+      // 1.把item添加到我的频道里面
+      this.channels.push(item)
+      // 2. 如果用户登录的话就进行发送请求
+      if (this.user) {
+        //  return
+      }
+      // 如果没有登录,把我的频道存储到本地存储中
       setItem('channels', this.channels)
     }
   },
