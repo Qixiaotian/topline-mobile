@@ -9,12 +9,15 @@
     >
       <!-- 我的频道 -->
       <van-cell icon="cross" @click="$emit('input', false)" />
-      <van-cell title="我的频道" label="点击进入频道">
-        <van-button round type="danger" size="mini">编辑</van-button>
+      <van-cell title="我的频道" label="点击进入频道" v-show="!isEdit">
+        <van-button round type="danger" size="mini" @click="isEdit=true">编辑</van-button>
+      </van-cell>
+      <van-cell title="我的频道" label="点击进入频道" v-show="isEdit">
+        <van-button round type="danger" size="mini" @click="isEdit=false">完成</van-button>
       </van-cell>
       <van-grid>
         <van-grid-item v-for="value in 8" :key="value" text="文字">
-          <van-icon slot="icon" class="close-icon" name="close" />
+          <van-icon slot="icon" class="close-icon" v-show="isEdit" name="close" />
         </van-grid-item>
       </van-grid>
       <!-- 推荐频道 -->
@@ -36,7 +39,8 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      isEdit: false
     }
   }
 }
