@@ -53,6 +53,7 @@
 
 <script>
 import { getSearchResults } from '../api/search'
+
 export default {
   name: 'SearchResult',
   props: ['q'],

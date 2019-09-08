@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { getSuggestion } from '@/api/search'
 import { mapState } from 'vuex'
 import * as storageTools from '@/utils/localStorage'
@@ -105,7 +106,7 @@ export default {
       // 再讲其索引保存到本地存储中去
       storageTools.setItem('history', this.histories)
     },
-    async handleInput () {
+    handleInput: _.debounce(async function () {
       if (!this.value) {
         return
       }
@@ -116,7 +117,8 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }
+    }, 300)
+
   }
 }
 </script>
