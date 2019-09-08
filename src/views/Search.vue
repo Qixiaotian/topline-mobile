@@ -32,7 +32,7 @@
         </div>
         <van-icon @click="isEdit=true" name="delete" size="18px" v-show="!isEdit" />
       </van-cell>
-      <van-cell v-for="(item,index) in histories" :key="item" :title="item">
+      <van-cell v-for="(item,index) in histories" :key="item" :title="item" @click="onSearch(item)">
         <!-- 自定义右侧内容 -->
         <van-icon v-show="isEdit" @click="handleDelete(index)" name="close" size="18px" />
       </van-cell>
@@ -75,6 +75,13 @@ export default {
       return item.replace(reg, `<span style="color:red">${this.value}</span>`)
     },
     onSearch (item) {
+      // 跳转到搜索结果的页面，将值传过去
+      this.$router.push({
+        name: 'search-result',
+        params: {
+          q: item
+        }
+      })
       // 判断如果搜索历史里面有你输入过的值将返回不执行
       if (this.histories.includes(item)) {
         // this.histories = set

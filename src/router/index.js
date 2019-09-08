@@ -16,6 +16,12 @@ export default new Router({
       component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue')
     },
     {
+      path: '/search-result',
+      name: 'search-result',
+      props: true,
+      component: () => import('../views/SearchResult.vue')
+    },
+    {
       path: '/',
       component: Tabbar,
       children: [
