@@ -96,11 +96,11 @@ export default {
       setItem('channels', this.channels)
     },
     async handleChannelItem (channel) {
-      // this.$set('channel', 'timestamp', null)
-      // this.$set('channel', 'articles', [])
-      // this.$set('channel', 'loading', false)
-      // this.$set('channel', 'finished', false)
-      // this.$set('channel', 'pullLoading', false)
+      this.$set(channel, 'timestamp', null)
+      this.$set(channel, 'articles', [])
+      this.$set(channel, 'loading', false)
+      this.$set(channel, 'finished', false)
+      this.$set(channel, 'pullLoading', false)
       // 1.把item添加到我的频道里面
       this.channels.push(channel)
       // 2. 如果用户登录的话就进行发送请求
