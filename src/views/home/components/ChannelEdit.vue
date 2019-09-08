@@ -28,7 +28,7 @@
       <!-- 推荐频道 -->
       <van-cell title="推荐频道" label="点击添加频道" />
       <van-grid>
-        <van-grid-item v-for="item in recommendChannels" :key="item.id" :text="item.name"  @click="handleChannelItem(item)"/>
+        <van-grid-item v-for="(item,index) in recommendChannels" :key="index" :text="item.name"  @click="handleChannelItem(item)"/>
       </van-grid>
     </van-popup>
   </div>
@@ -95,13 +95,18 @@ export default {
       // 最后将其频道的数据保存到本地存储
       setItem('channels', this.channels)
     },
-    async handleChannelItem (item) {
+    async handleChannelItem (channel) {
+      // this.$set('channel', 'timestamp', null)
+      // this.$set('channel', 'articles', [])
+      // this.$set('channel', 'loading', false)
+      // this.$set('channel', 'finished', false)
+      // this.$set('channel', 'pullLoading', false)
       // 1.把item添加到我的频道里面
-      this.channels.push(item)
+      this.channels.push(channel)
       // 2. 如果用户登录的话就进行发送请求
       if (this.user) {
         try {
-          await addChannel(item.id, this.channels.length)
+          await addChannel(channel.id, this.channels.length)
         } catch (err) {
           this.$toast.fail('操作失败')
         }
@@ -121,7 +126,7 @@ export default {
       const ids = this.channels.map((channel) => {
         return channel.id
       })
-      // 如果我的列表的id包含于所有的列表的id，那么久不要与其相同发的id将其并不重复的数组进行返回
+      // 如果我的列表的id包含于所有的列表的id，那么不要与其相同发的id将其并不重复的数组进行返回
       return this.AllChannelList.filter((channel) => {
         return !ids.includes(channel.id)
       })

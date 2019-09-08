@@ -143,7 +143,7 @@ export default {
             setItem('channels', channels)
           }
         }
-        channels.forEach(channel => {
+        channels.forEach((channel) => {
           channel.timestamp = null
           channel.articles = []
           channel.loading = false
