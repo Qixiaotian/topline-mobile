@@ -24,3 +24,20 @@ export const reports = ({ target, type }) => {
 export const getArticle = (id) => {
   return request.get(`/app/v1_0/articles/${id}`)
 }
+export const likeArticle = (id) => {
+  return request.post('/app/v1_0/article/likings', {
+    target: id
+  })
+}
+
+// 取消点赞
+export const unLikeArticle = (id) => {
+  return request.delete(`/app/v1_0/article/likings/${id}`)
+}
+
+// 不喜欢  上面有
+
+// 取消不喜欢
+export const unDislikeArticle = (id) => {
+  return request.delete(`/app/v1_0/article/dislikes/${id}`)
+}
