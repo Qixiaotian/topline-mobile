@@ -17,6 +17,7 @@
 
       </div>
       <!-- 点赞和取消 -->
+      <more-action></more-action>
     </div>
   </div>
 </template>
@@ -24,9 +25,11 @@
 <script>
 import { getArticle } from '../../api/article'
 import AuthorInfo from './componect/AuthorInfo'
+import MoreAction from './componect/MoreAction'
 export default {
   components: {
-    AuthorInfo
+    AuthorInfo,
+    MoreAction
   },
   name: 'Detail',
   props: ['id'],
