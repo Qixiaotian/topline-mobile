@@ -24,6 +24,9 @@ export default {
   props: ['article'],
   methods: {
     async handleLike () {
+      if (!this.$checkLogin()) {
+        return
+      }
       try {
         if (this.article.attitude === 1) {
           await unLikeArticle(this.article.art_id)

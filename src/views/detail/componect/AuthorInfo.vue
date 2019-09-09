@@ -29,6 +29,9 @@ export default {
   },
   methods: {
     async handleFollow () {
+      if (!this.$checkLogin()) {
+        return
+      }
       this.loading = true
       try {
         if (this.article.is_followed) {
