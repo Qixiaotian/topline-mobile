@@ -22,6 +22,7 @@
               v-for="article in currentChannel.articles"
               :key="article.art_id.toString()"
               :title="article.title"
+                @click="$router.push({ name: 'detail', params: { id: article.art_id.toString() } })"
             >
               <!--  利用插槽编辑说明的那个位置 -->
               <div slot="label">
@@ -49,7 +50,7 @@
                   <!-- 发布的时间  由于时间需要进行处理dayjs -->
                   <span>{{ article.pubdate |fmtDate}}</span>&nbsp;
                   <!-- 右侧的图标 -->
-                  <van-icon name="cross" class="close" @click="handleAction(article)" />
+                  <van-icon name="cross" class="close" @click.stop="handleAction(article)" />
                 </p>
               </div>
             </van-cell>

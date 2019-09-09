@@ -16,10 +16,16 @@ export default new Router({
       component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue')
     },
     {
-      path: '/search-result',
+      path: '/search-result/:q',
       name: 'search-result',
       props: true,
       component: () => import('../views/SearchResult.vue')
+    },
+    {
+      path: '/detail/:id',
+      name: 'detail',
+      props: true,
+      component: () => import('../views/detail/index.vue')
     },
     {
       path: '/',

@@ -20,6 +20,7 @@
         v-for="article in list"
         :key="article.art_id.toString()"
         :title="article.title"
+      @click="$router.push({ name: 'detail', params: { id: article.art_id.toString() } })"
       >
             <div slot="label">
           <!-- grid 显示封面
@@ -78,7 +79,7 @@ export default {
           q: this.q
         })
         // 请求过来的的结果push到数组中去
-        this.push(...data.results)
+        this.list.push(...data.results)
         this.page++
         this.loading = false
         // 当文章加载完毕的时候进行显示

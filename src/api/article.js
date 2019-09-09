@@ -20,3 +20,7 @@ export const dislikeArticle = (id) => {
 export const reports = ({ target, type }) => {
   return request.post('/app/v1_0/article/reports', { target, type })
 }
+// 获取文章详情,id文章的id
+export const getArticle = (id) => {
+  return request.get(`/app/v1_0/articles/${id}`)
+}
