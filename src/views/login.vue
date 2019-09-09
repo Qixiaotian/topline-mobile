@@ -53,7 +53,8 @@ export default {
           return
         }
         let res = await login(this.user)
-        this.$router.push('./')
+        // 接收的查询字符串如果接收值存在的话进行登录调转,如果不存在的话进行跳转到首页
+        this.$router.push(this.$route.query.redirect || '/')
         // this.$store.commit('setPush', res)
         this.setPush(res)
         this.$toast.success('登陆成功')
