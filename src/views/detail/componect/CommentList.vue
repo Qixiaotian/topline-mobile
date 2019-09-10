@@ -20,7 +20,7 @@
         <p>{{comment.content}}</p>
         <p>
           <span>{{comment.pubdate | fmtDate}}</span>
-          <span @click="handleShowReplyList">回复 {{comment.reply_count}}</span>
+          <span @click="handleShowReplyList(comment)">回复 {{comment.reply_count}}</span>
         </p>
       </div>
     </van-cell>
@@ -45,8 +45,9 @@ export default {
   },
   methods: {
     // 点击事件将点击出弹出层,将true这个信息放到仓库里面
-    handleShowReplyList () {
+    handleShowReplyList (comment) {
       this.$store.commit('setShowReplyList', true)
+      this.$store.commit('setCurrentComment', comment)
     },
     async onLoad () {
       try {

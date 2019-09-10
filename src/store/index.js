@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     user: storageTools.getItem('user'),
     // 设置默认的显示
-    showReplyList: false
+    showReplyList: false,
+    //  传递当前评论的信息
+    currentComment: null
 
   },
   mutations: {
@@ -18,6 +20,10 @@ export default new Vuex.Store({
     // 设置提交的方法将状态传给仓库里面
     setShowReplyList (state, isShow) {
       state.showReplyList = isShow
+    },
+    //  设置传给当前的评论的数据方法
+    setCurrentComment (state, comment) {
+      state.currentComment = comment
     }
   },
   actions: {
