@@ -21,7 +21,8 @@
       <!-- 评论列表 -->
       <comment-list :isArticle ="true" :id="articles.art_id.toString()" ></comment-list>
       <!-- 发送评论 -->
-      <send-comment :isArticle="true" :target='articles.art_id.toString()'></send-comment>
+      <send-comment :isArticle="true" :target='articles.art_id'></send-comment>
+      <reply-list v-model="showReplyList"></reply-list>
     </div>
   </div>
 </template>
@@ -32,12 +33,15 @@ import AuthorInfo from './componect/AuthorInfo'
 import MoreAction from './componect/MoreAction'
 import CommentList from './componect/CommentList'
 import SendComment from './componect/SendComment'
+import ReplyList from './componect/ReplayList'
+import { mapState } from 'vuex'
 export default {
   components: {
     AuthorInfo,
     MoreAction,
     CommentList,
-    SendComment
+    SendComment,
+    ReplyList
   },
   name: 'Detail',
   props: ['id'],
@@ -54,6 +58,10 @@ export default {
   },
   created () {
     this.loadData()
+  },
+  // 导入辅助函数将showReplyList的状态传给组件ReplyList
+  computed: {
+    ...mapState(['showReplyList'])
   }
 }
 </script>
