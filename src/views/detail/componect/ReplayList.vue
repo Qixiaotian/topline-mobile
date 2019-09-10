@@ -43,6 +43,7 @@
 import CommentList from './CommentList'
 import SendComment from './SendComment'
 import { mapState } from 'vuex'
+import eventBus from '@/utils/eventBus'
 export default {
   name: 'ReplyList',
   props: ['value', 'art_id'],
@@ -52,6 +53,11 @@ export default {
   },
   computed: {
     ...mapState(['currentComment'])
+  },
+  created () {
+    eventBus.$on('eventBus', () => {
+      this.currentComment.reply_count++
+    })
   }
 }
 </script>

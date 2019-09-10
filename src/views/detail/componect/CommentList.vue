@@ -29,6 +29,7 @@
 
 <script>
 import { getComments } from '@/api/comment'
+import eventBus from '@/utils/eventBus'
 export default {
   name: 'CommentList',
   props: ['isArticle', 'id'],
@@ -75,6 +76,11 @@ export default {
   },
   created () {
     this.onLoad()
+    eventBus.$on('sendSuccess', (obj) => {
+      if (this.isArticle === obj.isArticle) {
+        this.list.unshift(obj.comment)
+      }
+    })
   }
 }
 </script>

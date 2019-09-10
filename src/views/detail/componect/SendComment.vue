@@ -12,6 +12,7 @@
 
 <script>
 import { sendComment } from '@/api/comment'
+import eventBus from '@/utils/eventBus'
 export default {
   name: 'SendComment',
   props: ['isArticle', 'target', 'art_id'],
@@ -38,7 +39,9 @@ export default {
           content: this.content,
           art_id: this.art_id
         })
-        console.log(data)
+        eventBus.$emit('sendSuccess', {
+          comment: data.new_obj,
+          isArticle: this.isArticle })
         this.content = ''
       } catch (err) {
         this.$toast.fail('发送失败')
