@@ -20,6 +20,8 @@
       <more-action :article="articles"></more-action>
       <!-- 评论列表 -->
       <comment-list :isArticle ="true" :id="articles.art_id.toString()" ></comment-list>
+      <!-- 发送评论 -->
+      <send-comment :isArticle="true"></send-comment>
     </div>
   </div>
 </template>
@@ -29,11 +31,13 @@ import { getArticle } from '../../api/article'
 import AuthorInfo from './componect/AuthorInfo'
 import MoreAction from './componect/MoreAction'
 import CommentList from './componect/CommentList'
+import SendComment from './componect/SendComment'
 export default {
   components: {
     AuthorInfo,
     MoreAction,
-    CommentList
+    CommentList,
+    SendComment
   },
   name: 'Detail',
   props: ['id'],
