@@ -65,7 +65,7 @@
       @handlesuccess="handlesuccess"
     ></more-action>
     <!--  使用编辑组建 -->
-    <channel-edit v-model="showChannelEdit" :channels='channels' :active="activeIndex" @changeIndex="changeIndex"></channel-edit>
+    <channel-edit v-model="showChannelEdit" :channels='channels' :active="activeIndex" @changeIndex="changeIndex" @last="handlelast"></channel-edit>
   </div>
 </template>
 
@@ -111,6 +111,10 @@ export default {
     this.loadChannels()
   },
   methods: {
+    // 接收子组件传过来的事件,更改当前索引值
+    handlelast () {
+      this.activeIndex--
+    },
     // 接收子组件传过来的值
     handlesuccess () {
       // 关闭弹层

@@ -81,7 +81,9 @@ export default {
         return
       }
       // 编辑模式
-      this.channels.splice(index, 1)
+      if (this.active === this.channels.length - 1) {
+        this.$emit('last')
+      } this.channels.splice(index, 1)
       if (this.user) {
       // 如果用户编辑模式那么发送请求对其数据进行删除
         try {
