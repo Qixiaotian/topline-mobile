@@ -6,38 +6,41 @@
       </div>
     </div>
         <div  v-else>
-      <van-cell-group class="user-info">
+      <van-cell-group class="user-info" >
         <van-cell class="base-info" is-link :border="false">
           <div slot="title">
-            <img class="avatar" src="http://toutiao.meiduo.site/FgSTA3msGyxp5-Oufnm5c0kjVgW7" alt="">
-            <span class="title">只是为了好玩儿</span>
+            <img class="avatar" :src="userInfo.photo" alt="">
+            <span class="title">{{userInfo.name}}</span>
+            <div class="day">
+              <div>今日阅读</div>
+              <div></div>
+            </div>
           </div>
         </van-cell>
-        <van-grid class="data-info" :border="false">
+        <van-grid class="data-info" :border="false"  >
           <van-grid-item>
-            <span class="count">1</span>
+            <span class="count">{{userInfo.art_count}}</span>
             <span class="text">头条</span>
           </van-grid-item>
           <van-grid-item>
-            <span class="count">2</span>
+            <span class="count">{{userInfo.follow_count}}</span>
             <span class="text">关注</span>
           </van-grid-item>
           <van-grid-item>
-            <span class="count">3</span>
+            <span class="count">{{userInfo.fans_count}}</span>
             <span class="text">粉丝</span>
           </van-grid-item>
           <van-grid-item>
-            <span class="count">4</span>
+            <span class="count">{{userInfo.like_count}}</span>
             <span class="text">获赞</span>
           </van-grid-item>
         </van-grid>
       </van-cell-group>
-      <van-cell-group>
-        <van-grid clickable>
-          <van-grid-item icon="star" text="收藏"/>
-          <van-grid-item icon="chat" text="历史"/>
-          <van-grid-item icon="like" text="作品"/>
-          <van-grid-item icon="browsing-history" text="浏览历史"/>
+      <van-cell-group >
+        <van-grid clickable :column-num = '3'  >
+          <van-grid-item icon="star-o"  text="收藏" />
+          <van-grid-item icon="clock-o" text="历史"/>
+          <van-grid-item icon="label-o" text="作品"/>
         </van-grid>
       </van-cell-group>
       <van-cell-group>
@@ -52,12 +55,19 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getUserInfo } from '@/api/user'
 export default {
   name: 'User',
+  data () {
+    return {
+      userInfo: {}
+    }
+  },
   computed: {
     ...mapState(['user'])
   },
   methods: {
+    // 点击的时候进行记录信息
     handleLogin () {
       this.$router.push({
         path: '/login',
@@ -65,14 +75,30 @@ export default {
           redirect: this.$route.fullPath
         }
       })
+    },
+    // 发送请求获取用户信息
+    async  getUser () {
+      // 判断是否登陆
+      if (!this.$checkLogin()) {
+        return
+      }
+      try {
+        let data = await getUserInfo()
+        this.userInfo = data
+      } catch (err) {
+        this.$toast.fail('获取信息失败')
+      }
     }
+  },
+  created () {
+    this.getUser()
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .not-login {
-  height: 150px;
+  height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,6 +117,7 @@ export default {
 }
 .user-info {
   .base-info {
+    height: 120px;
     display: flex;
     align-items: center;
     background-color: #0096fa;
@@ -99,17 +126,25 @@ export default {
       align-items: center
     }
     .avatar {
-      margin-right: 15px;
-      width: 50px;
+      margin-left: 25px;
+      width: 70px;
+      height: 70px;
       border-radius: 100%;
+    }
+    .title{
+      color: #fff;
+      margin-left: 20px;
+      font-size: 20px;
     }
   }
   .data-info {
+    color: #fff;
     .text {
-      font-size: 14px;
+      font-size: 16px;
     }
     .count {
-      font-size: 12px;
+      margin-bottom: 5px;
+      font-size: 16px;
     }
   }
   /deep/ .van-cell__right-icon {

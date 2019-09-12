@@ -12,3 +12,6 @@ export const blacklists = (id) => createAPI('/app/v1_0/user/blacklists', 'post',
 
 export const followUser = (id) => createAPI('/app/v1_0/user/followings', 'post', { target: id })
 export const unFollowUser = (id) => createAPI(`/app/v1_0/user/followings/${id}`, 'post')
+
+// 封装获取用户指定信息的接口
+export const getUserInfo = () => createAPI('/app/v1_0/user', 'get')
