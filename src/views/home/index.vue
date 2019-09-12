@@ -1,5 +1,7 @@
 <template>
   <div>
+        <van-nav-bar title="黑马头条" fixed></van-nav-bar>
+
     <van-tabs title-active-color="#3194ff" animated color="#3194ff" v-model="activeIndex">
       <!--  添加图标标签 -->
       <!-- vant的下拉加载 -->
@@ -144,7 +146,9 @@ export default {
           // 本地数据中找不到信息要请求新的数据进行数据频道列表渲染
           if (!channels) {
             const data = await getDdefaultOrUserChannel()
-            channels = data.channals
+            channels = data.channels
+            // console.log(channels)
+
             setItem('channels', channels)
           }
         }

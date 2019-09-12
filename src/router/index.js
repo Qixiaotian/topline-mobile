@@ -11,11 +11,6 @@ export default new Router({
       component: () => import('@/views/login.vue')
     },
     {
-      path: '/user',
-      name: 'user',
-      component: () => import('@/views/User.vue')
-    },
-    {
       path: '/search',
       name: 'search',
       component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue')
@@ -45,6 +40,11 @@ export default new Router({
           name: 'home',
           path: '',
           component: Home
+        },
+        {
+          path: '/user',
+          name: 'user',
+          component: () => import('@/views/User.vue')
         }
       ]
     }

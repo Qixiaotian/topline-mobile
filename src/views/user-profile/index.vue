@@ -8,7 +8,7 @@
     />
       <!-- @click-right="btnSave" -->
     <van-cell-group>
-      <van-cell title="头像" is-link>
+      <van-cell title="头像" is-link @click="showUploadFile = true">
         <div slot="default">
           <img width="30" height="30" :src="getProfileObj.photo" alt="">
         </div>
@@ -19,17 +19,23 @@
       <van-cell title="性别" is-link :value="getProfileObj.gender?'女':'男'" />
       <van-cell title="生日" is-link :value="getProfileObj.birthday"/>
     </van-cell-group>
+    <!-- upload弹层 -->
+    <upload-file v-model="showUploadFile"></upload-file>
   </div>
 </template>
 
 <script>
 import { getUserProfile } from '@/api/user'
-
+import UploadFile from './componenct/UploadFile'
 export default {
   name: 'user-profile',
+  components: {
+    UploadFile
+  },
   data () {
     return {
-      getProfileObj: {}
+      getProfileObj: {},
+      showUploadFile: false
     }
   },
   methods: {

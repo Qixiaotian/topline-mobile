@@ -1,6 +1,5 @@
 <template>
   <div>
-    <van-nav-bar title="黑马头条" fixed></van-nav-bar>
     <router-view></router-view>
     <van-tabbar route>
       <van-tabbar-item icon="home-o" to="/">主页</van-tabbar-item>

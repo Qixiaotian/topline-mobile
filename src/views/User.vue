@@ -56,6 +56,7 @@
 <script>
 import { mapState } from 'vuex'
 import { getUserInfo } from '@/api/user'
+// import UploadFile from './'
 export default {
   name: 'User',
   data () {
