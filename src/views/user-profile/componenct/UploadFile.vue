@@ -7,8 +7,9 @@
   >
     <van-cell-group>
       <van-cell title="从相册选择图片" @click="handleSelectFile" />
+      <input type="file" ref="file" style="display:none" />
       <!-- 添加一个上传文件的input文本框,隐藏 -->
-      <input type="file" ref="file" style="display:none">
+
       <van-cell title="拍照" />
       <van-cell title="取消" @click="$emit('input', false)" />
     </van-cell-group>
@@ -17,43 +18,62 @@
 
 <script>
 import Vue from 'vue'
-// 使用vant的预览方法
 import { ImagePreview } from 'vant'
+import { uploadPhoto } from '@/api/article'
 Vue.use(ImagePreview)
 export default {
   name: 'UploadFile',
   props: ['value'],
   methods: {
-    // 通过点击方法 触发点击文件的上传事件
+    // 点击从相册选择图片，弹出选择图片的对话框
     handleSelectFile () {
       this.$refs.file.click()
-      // 如果没有上传文件将会返回
-      this.$refs.file.onchange = (e) => {
+      // 给file注册onchange事件
+      this.$refs.file.onchange = e => {
+        // 如果没有选择文件，返回
         if (e.target.files.length === 0) {
           return
         }
-        // 找到图片内存中找到可以访问的临时地址
+        //  console.log(e.target.files[0])
+        // 图片在内存中可以访问的临时路径
         const url = URL.createObjectURL(e.target.files[0])
-        //  将通知父组件进行关闭弹框
+        // console.log(url)
+        // 关闭弹出对话框
         this.$emit('input', false)
         // 图片预览
         ImagePreview({
-          images: [
-            url
-          ],
+          images: [url],
+          // 不显示页码
           showIndex: false,
-          onClose () {
-
-          }
+          onClose: this.handleUploadPhoto
         })
       }
+    },
+    handleUploadPhoto () {
+      this.$dialog.confirm({
+        message: '是否确认该图片作为头像'
+      }).then(async () => {
+        // on confirm
+        try {
+          const data = await uploadPhoto('photo', this.$refs.file.files[0])
+          // 更改当前的头像
+          // console.log(data)
+          // 通知父组件图片上传成功
+          this.$emit('upload-success', data.photo)
+          this.$toast.success('头像上传成功')
+        } catch (err) {
+          this.$toast.fail('头像上传失败')
+        }
+      }).catch(() => {
+        // on cancel
+      })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.van-cell__title {
-  text-align: center;
-}
+  .van-cell__title {
+    text-align: center;
+  }
 </style>

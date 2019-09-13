@@ -41,3 +41,9 @@ export const unLikeArticle = (id) => {
 export const unDislikeArticle = (id) => {
   return request.delete(`/app/v1_0/article/dislikes/${id}`)
 }
+// 设置上传图片的接口
+export const uploadPhoto = (key, file) => {
+  const formData = new FormData()
+  formData.append(key, file)
+  return request.patch('/app/v1_0/user/photo', formData)
+}
