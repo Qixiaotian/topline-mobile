@@ -9,10 +9,10 @@
     <!-- tabs -->
     <van-tabs v-model="active" color="blue">
       <van-tab title="关注" >
-        <user-list :type='type'></user-list>
+        <user-list :type='active'></user-list>
       </van-tab>
       <van-tab title="粉丝">
-         <user-list :type='type'></user-list>
+         <user-list :type='active'></user-list>
       </van-tab>
     </van-tabs>
     <!-- list列表 -->
@@ -32,7 +32,7 @@ export default {
       type: '1'
     }
   },
-  created () {
+  activated () {
     this.type = this.$route.query.type
     if (this.type === '1') {
       this.active = 0
