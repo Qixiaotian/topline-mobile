@@ -23,7 +23,7 @@ export default new Router({
     {
       path: '/follow',
       name: 'follow',
-      component: () => import(/* webpackChunkName: "follow" */ '../views/Follow.vue')
+      component: () => import(/* webpackChunkName: "follow" */ '../views/follow')
     },
     {
       path: '/search-result/:q',
