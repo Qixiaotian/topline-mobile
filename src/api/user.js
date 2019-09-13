@@ -17,3 +17,23 @@ export const unFollowUser = (id) => createAPI(`/app/v1_0/user/followings/${id}`,
 export const getUserInfo = () => createAPI('/app/v1_0/user', 'get')
 // 获取用户个人资料
 export const getUserProfile = () => createAPI('/app/v1_0/user/profile', 'get')
+
+// 获取关注用户列表
+export const getFollowings = ({
+  page,
+  perPage
+}) => createAPI('/app/v1_0/user/followings', 'get', {
+  params: {
+    page,
+    per_page: perPage
+  } })
+
+// 获取粉丝用户列表
+export const getFollowers = ({
+  page,
+  perPage
+}) => createAPI('/app/v1_0/user/followers', 'get', {
+  params: {
+    page,
+    per_page: perPage
+  } })
