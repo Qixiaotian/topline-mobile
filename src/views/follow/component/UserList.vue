@@ -53,7 +53,7 @@ export default {
           this.finished = true
         }
       } catch (err) {
-        this.$toast.fail('家在数据失败')
+        this.$toast.fail('加载数据失败')
       }
     } }
 }

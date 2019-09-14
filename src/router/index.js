@@ -21,6 +21,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "search" */ '../views/user-profile')
     },
     {
+      path: '/chat',
+      name: 'chat',
+      component: () => import(/* webpackChunkName: "follow" */ '../views/Chat.vue')
+    },
+    {
       path: '/follow',
       name: 'follow',
       component: () => import(/* webpackChunkName: "follow" */ '../views/follow')
